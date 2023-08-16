@@ -188,7 +188,7 @@ export const defaultConfig = (): Config => ({
       builtinBrowser: false,
       hotkey: 'D',
       hotkeyHold: 'Ctrl',
-      hotkeyLocked: 'Ctrl + Alt + D',
+      hotkeyLocked: 'Shift + Alt + D',
       showSeller: false,
       searchStatRange: 10,
       showCursor: true,

@@ -217,7 +217,7 @@ export const KeyToElectron = {
   Backslash: '\\',
   BracketRight: ']',
   Quote: "'",
-  Ctrl: 'CmdOrCtrl',
+  Ctrl: 'Ctrl',
   Alt: 'Alt',
   Shift: 'Shift'
 }

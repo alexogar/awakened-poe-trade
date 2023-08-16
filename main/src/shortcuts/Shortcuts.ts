@@ -223,15 +223,27 @@ export class Shortcuts {
 }
 
 function pressKeysToCopyItemText (pressedModKeys: string[] = [], showModsKey: string) {
-  let keys = mergeTwoHotkeys('Ctrl + C', showModsKey).split(' + ')
+  const keysString = mergeTwoHotkeys('Ctrl + C', showModsKey)    
+
+  let keys: string[] = keysString.split(' + ')
   keys = keys.filter(key => key !== 'C' && !pressedModKeys.includes(key))
 
   for (const key of keys) {
     uIOhook.keyToggle(UiohookKey[key as UiohookKeyT], 'down')
   }
 
+  const allowedModifierKeys: Set<UiohookKeyT> = new Set(["Ctrl", "Alt", "Shift"]);
+  const modifierKeys: number[] = keys
+    .filter((key) => allowedModifierKeys.has(key as UiohookKeyT))
+    .map((key) => UiohookKey[key as UiohookKeyT])
+
   // finally press `C` to copy text
-  uIOhook.keyTap(UiohookKey.C)
+  uIOhook.keyTap(
+    UiohookKey.C,
+    // On Mac, robotjs requires the modifiers to be specified in this way to
+    // register. See https://github.com/octalmage/robotjs/issues/208#issuecomment-223828356
+    process.platform === 'darwin' ? modifierKeys : undefined
+  )
 
   keys.reverse()
   for (const key of keys) {

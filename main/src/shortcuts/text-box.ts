@@ -13,26 +13,28 @@ const AUTO_CLEAR = [
 ]
 
 export function typeInChat (text: string, send: boolean, clipboard: HostClipboard) {
+  const modifiers = process.platform === 'darwin' ? [Key.Meta] : [Key.Ctrl]
+
   clipboard.restoreShortly((clipboard) => {
     if (text.startsWith(PLACEHOLDER_LAST)) {
       text = text.slice(`${PLACEHOLDER_LAST} `.length)
       clipboard.writeText(text)
-      uIOhook.keyTap(Key.Enter, [Key.Ctrl])
+      uIOhook.keyTap(Key.Enter, modifiers)
     } else if (text.endsWith(PLACEHOLDER_LAST)) {
       text = text.slice(0, -PLACEHOLDER_LAST.length)
       clipboard.writeText(text)
-      uIOhook.keyTap(Key.Enter, [Key.Ctrl])
+      uIOhook.keyTap(Key.Enter, modifiers)
       uIOhook.keyTap(Key.Home)
       uIOhook.keyTap(Key.Delete)
     } else {
       clipboard.writeText(text)
       uIOhook.keyTap(Key.Enter)
       if (!AUTO_CLEAR.includes(text[0])) {
-        uIOhook.keyTap(Key.A, [Key.Ctrl])
+        uIOhook.keyTap(Key.A, modifiers)
       }
     }
 
-    uIOhook.keyTap(Key.V, [Key.Ctrl])
+    uIOhook.keyTap(Key.V, modifiers)
 
     if (send) {
       uIOhook.keyTap(Key.Enter)
